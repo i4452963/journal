@@ -160,20 +160,3 @@ fig("Pushing to Github...")
 copy_files()
 git_push()
 fig("Done!", "All done. Have a nice day!")
-~
-~
-~
-~
-~
-~
-~
-~
-~
-~
-~
-~
-~
-~
-~
-~
-~
