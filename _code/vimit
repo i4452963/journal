@@ -1,0 +1,179 @@
+#! /usr/bin/env python
+msg1 = """
+  ____ _                   _____ _           __   __ _    __  __ _     _
+ / ___| |__   ___  _ __   |_   _| |__   ___  \ \ / // \  |  \/  | |   | |
+| |   | '_ \ / _ \| '_ \    | | | '_ \ / _ \  \ V // _ \ | |\/| | |   | |
+| |___| | | | (_) | |_) |   | | | | | |  __/   | |/ ___ \| |  | | |___|_|
+ \____|_| |_|\___/| .__/    |_| |_| |_|\___|   |_/_/   \_\_|  |_|_____(_)
+                  |_|                              Keep 1-file "for life"
+     ┌────────┐
+     │YAML    │      ┌──────┐
+     │---     │      │      │     BLOG WITHOUT BLOGGING SOFTWARE
+     │Markdown│─────►│ HTML │
+     │        │      │      │     There's no "system" to see here. It's
+     │        │      └──────┘     just a file, folks. Please disperse!!
+     │--------│
+     │YAML    │      ┌──────┐     > I'm building better blogging
+     │---     │      │      │     > To replace a bygone era
+     │Markdown│─────►│ HTML │     > Where your CMS is flogging
+     │        │      │      │     > You to take up something clearer,
+     │        │      └──────┘     > So you catalog your cat tails
+     │--------│                   > In one file for the hashing
+     │YAML    │      ┌──────┐     > Using YAML for the data
+     │---     │      │      │     > And then Jekyll for the lashing.
+     │Markdown│─────►│ HTML │
+     │        │      │      │     START TODAY! DRINKME TO BEGIN
+     │        │      └──────┘     https://mikelev.in/drinkme
+     └────────┘
+"""
+
+import shlex
+import shutil
+from os import system
+from os import getuid
+from sys import stdout
+from time import sleep
+from pwd import getpwuid
+from pyfiglet import Figlet
+from subprocess import Popen, PIPE
+print(msg1)
+sleep(1)
+
+# Get Linux Username for portability between systems
+USERNAME = getpwuid(getuid())[0]
+GIT_EXE = "/usr/bin/git"
+REPOS = f"/home/{USERNAME}/repos/"
+JOURNAL = f"{REPOS}journal/"
+
+# Files to edit
+edit_files = [
+    f"{JOURNAL}_drafts/journal.md",
+    f"{JOURNAL}_code/vimit",
+    f"{JOURNAL}_code/chop.py",
+    f"{JOURNAL}_code/init.vim",
+]
+
+# Places to put files after editing
+copy_to_destination = {
+    f"{JOURNAL}_code/vimit": "/home/ubuntu/pyenv/bin/vimit",
+    f"{JOURNAL}_code/init.vim": "/home/ubuntu/.config/nvim/init.vim",
+}
+
+# Repos to push after editing
+git_repos = [
+    f"{REPOS}journal",
+]
+
+
+# Load function early so we can use it, pronto!
+def fig(text, description=None, font="standard"):
+    #  _____ _       _      _
+    # |  ___(_) __ _| | ___| |_
+    # | |_  | |/ _` | |/ _ \ __|
+    # |  _| | | (_| | |  __/ |_
+    # |_|   |_|\__, |_|\___|\__|
+    #          |___/
+    """Let them see text!"""
+    f = Figlet(font=font)
+    print(f.renderText(text))
+    if description:
+        print(description)
+    sleep(0.5)
+
+
+def flush(std):
+    """Flush a stream."""
+    for line in std:
+        line = line.strip()
+        if line:
+            print(line)
+            stdout.flush()
+
+
+def git(cwd, line_command):
+    #        _ _
+    #   __ _(_) |_   This is it. This is git.
+    #  / _` | | __|  It does the simple deed.
+    # | (_| | | |_   From a shell what it does well
+    #  \__, |_|\__|  Is move things where you need.
+    #  |___/
+    """Run a Linux git command."""
+    cmd = [GIT_EXE] + shlex.split(line_command)
+    show_cmd = " ".join(cmd)
+    print(f"Running: {show_cmd}")
+    process = Popen(
+        args=cmd,
+        cwd=cwd,
+        stdout=PIPE,
+        stderr=PIPE,
+        shell=False,
+        bufsize=1,
+        universal_newlines=True,
+    )
+    flush(process.stdout)
+
+
+def git_pull():
+    for arepo in git_repos:
+        fig(f"{arepo.split('/')[-1]}", font="cybermedium")
+        git(arepo, "pull")
+        print()
+
+
+def load_editor():
+    print("Loading editor...")
+    files = " ".join(edit_files)
+    command = f"cd {JOURNAL}; nvim {files}"
+    system(command)
+
+
+def git_push():
+    print("Hit")
+    for repo in git_repos:
+        fig(f"{repo.split('/')[-1]}", font="cybermedium")
+        print(f"Pushing {repo} to Github...")
+        git(repo, "commit -am 'pushing to github...'")
+        git(repo, "push")
+        print()
+
+
+def copy_files():
+    for source, destination in copy_to_destination.items():
+        print(f"Copying {source} to {destination}")
+        shutil.copyfile(source, destination)
+
+
+def reverse_copy():
+    for destination, source in copy_to_destination.items():
+        print(f"Copying {source} to {destination}")
+        destination = "/".join(destination.split("/")[:-1])
+        shutil.copy(source, destination)
+
+
+fig("vim it all...", "Loading data into multiple vim buffers\n")
+
+# Main Control Flow
+git_pull()
+reverse_copy()
+load_editor()
+fig("Pushing to Github...")
+copy_files()
+git_push()
+fig("Done!", "All done. Have a nice day!")
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
