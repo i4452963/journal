@@ -1,4 +1,3 @@
-# USAGE: python ~/repos/yamlchop/chop.py -f ~/repos/blog/_drafts/blog.md
 # __   __ _    __  __ _         _                      chop
 # \ \ / // \  |  \/  | |    ___| |__   ___  _ __        _|   chop
 #  \ V // _ \ | |\/| | |   / __| '_ \ / _ \| '_ \      | |     |   chop
@@ -29,6 +28,7 @@
 #                          ___/  /          \_/
 #                         /     /
 #                         `----`
+
 import os
 import re
 import sys
@@ -50,6 +50,9 @@ from nltk.stem import WordNetLemmatizer
 from sqlitedict import SqliteDict as sqldict
 from collections import Counter, defaultdict
 
+
+# Set where the OpenAI Key is kept
+OPENAI_KEY_PATH = "/home/ubuntu/.ssh/openai.txt"
 
 nltk.download('wordnet', quiet=True)  # Update Lemmatizer
 
@@ -166,9 +169,6 @@ for make_loc in [OUTPUT_PATH, REPO_DATA]:
 
 # Assure consistent keyword variation usage
 LEMMATIZER = WordNetLemmatizer()
-
-with open("/home/ubuntu/repos/yamlchop/openai.txt", "r") as fh:
-    openai.api_key = fh.readline()  # Read in your OpenAI API key
 
 #  _____                 _   _
 # |  ___|   _ _ __   ___| |_(_) ___  _ __  ___    Above this is configuration
@@ -350,31 +350,36 @@ def sync_check():
     """Check for new posts needing AI-writing or YAMLESQUE source-file updating."""
     fig("SYNC Check", "Checking for new posts needing AI-writing.")
     global ydict
-    for i, (fm, apost, combined) in enumerate(yaml_generator(YAMLESQUE, clone=True)):
-        if fm and len(fm) == 2 and "title" in fm and "date" in fm:
-            # Only 2 fields of YAML front matter asks for release.
-            title = fm["title"]
-            slug = slugify(title)
-            ydict[slug]["title"] = title
-            # Setting these values ALSO commits it to the databases
-            hits = []
-            rdict = {}
-            for afield in AI_FIELDS:
-                dbname = f"{REPO_DATA}{afield}.db"
-                result, api_hit = odb(dbname, slug, afield, combined)
-                rdict[afield] = result
-                if api_hit:
-                    hits.append(api_hit)
-            print()
-            if any(hits):
+
+    # Check if openai_key_path file exits:
+    if Path(OPENAI_KEY_PATH).exists():
+        with open(OPENAI_KEY_PATH, "r") as fh:
+            openai.api_key = fh.readline()  # Read in your OpenAI API key
+        for i, (fm, apost, combined) in enumerate(yaml_generator(YAMLESQUE, clone=True)):
+            if fm and len(fm) == 2 and "title" in fm and "date" in fm:
+                # Only 2 fields of YAML front matter asks for release.
+                title = fm["title"]
+                slug = slugify(title)
+                ydict[slug]["title"] = title
+                # Setting these values ALSO commits it to the databases
+                hits = []
+                rdict = {}
                 for afield in AI_FIELDS:
-                    print(f"{afield}: {rdict[afield]}")
-                    print()
-            build_ydict()  # Rebuilds ydict from database
-            update_yaml()  # Updates YAMLESQUE file data from database
-            new_source()  # Replaces YAMLESQUE input with synchronized output
-            if any(hits):
-                raise SystemExit("Review changes in source and re-release.\nClose this NeoVim buffer with :bd")
+                    dbname = f"{REPO_DATA}{afield}.db"
+                    result, api_hit = odb(dbname, slug, afield, combined)
+                    rdict[afield] = result
+                    if api_hit:
+                        hits.append(api_hit)
+                print()
+                if any(hits):
+                    for afield in AI_FIELDS:
+                        print(f"{afield}: {rdict[afield]}")
+                        print()
+                build_ydict()  # Rebuilds ydict from database
+                update_yaml()  # Updates YAMLESQUE file data from database
+                new_source()  # Replaces YAMLESQUE input with synchronized output
+                if any(hits):
+                    raise SystemExit("Review changes in source and re-release.\nClose this NeoVim buffer with :bd")
 
 
 def build_ydict(yamlesque=YAMLESQUE):
