@@ -88,7 +88,7 @@ fig("YAMLchop/chop...", "What's missing in your life is a timeless journal.")
 # Define command line arguments.          |___/                   /    ) |
 #                                                                '  _.'  |
 # Use in your .vimrc or init.vim like this:                      '-'/    \
-# let @p = ":terminal python ~/repos/yamlchop/chop.py -f " . expand('%:p')
+# let @p = ":terminal python ~/repos/Journal/_code/chop.py -f " . expand('%:p')
 
 aparser = argparse.ArgumentParser()
 add_arg = aparser.add_argument
@@ -558,10 +558,6 @@ def category_scan():
     with open(cat_file, "w") as fh:
         yaml.dump(cdict, fh)
     print(f"Found {len(cdict):,} categories.")
-    # for i, acat in enumerate(cdict):
-    #     print(f"{i+1}. {proper_words[acat]} ({cdict[acat]['count']})")
-    #     if i + 1 >= show_cats:
-    #         break
     category_grid()  # Builds category_list.md include
     category_page()  # Builds category.md and include
     category_pages()  # Builds cat_*.md and cat_*.md includes
