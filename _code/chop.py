@@ -79,7 +79,7 @@ def fig(text, description=None):
     sleep(0.5)
 
 
-fig("YAMLchop/chop...", "What's missing in your life is a timeless journal.")
+fig("Chop Journal...", "This works if you put a _config.yml file in place.")
 #  ____                          _                             ()   ,
 # |  _ \ __ _ _ __ ___  ___     / \   _ __ __ _ ___              O  \\  .
 # | |_) / _` | '__/ __|/ _ \   / _ \ | '__/ _` / __|              0 |\\/|
@@ -130,6 +130,15 @@ CATEGORY_PAGE = f"{PATH}{REPO}category.md"
 CATEGORY_GRID = f"{INCLUDES}category_list.md"
 CATEGORY_INCLUDE = f"{INCLUDES}category.md"
 # LOAD SITE CONFIG
+
+# Check if the repo has a _config.yml file
+# If not, print a message and quit.
+if not os.path.isfile(f"{PATH}{REPO}_config.yml"):
+    fig(REPO, f"Missing {PATH}{REPO}_config.yml")
+    print("Press :bd [Enter] to close this buffer.")
+    raise SystemExit()
+
+
 with open(f"{PATH}{REPO}_config.yml", "r") as stream:
     try:
         CONFIG = yaml.safe_load(stream)
