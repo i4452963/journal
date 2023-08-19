@@ -6,6 +6,15 @@
 " What was once .vimrc is now init.vim.                                 
 " It's time to fix my macros. And update Slice & Dice.
 
+" Check if running in Neovim
+if has('nvim')
+  " Neovim-specific settings go here
+  let @p = ":terminal python ~/repos/yamlchop/chop.py -f " . expand('%:p')
+else
+  " Vim-specific settings go here
+  let @p = ":execute '!python ~/repos/yamlchop/chop.py -f ' . expand('%:p')"
+endif
+
 syntax on
 syntax enable
 
@@ -68,8 +77,6 @@ let @i = '0v$hyi![€ýa$a](€ýa$pa)€ýa0llv/\.:s/\%V\<./\u&/g0llv/\.:s/\%V\-/ 
 
 "release currently edited blog.
 "Needs to be switched to :terminal NeoVim method for interactivity.
-"let @p = ":execute '!python ~/repos/Journal/_code/chop.py -f ' . expand('%:p')"  # vim (vs. NeoVim)
-let @p = ":terminal python ~/repos/Journal/_code/chop.py -f " . expand('%:p')
 
 "Make new journal entry.
 "THIS IS IT! The key to YAMLesque blogging (Reverse chronology and YAML headers).
@@ -108,3 +115,5 @@ nnoremap <C-S> :b1<CR> :source ~/.config/nvim/init.vim <CR>
 let g:copilot_enable_for_filetypes = ['markdown']
 let g:copilot_disable_for_filetypes = ['text']
 let g:copilot_filetypes = { 'markdown': v:true, 'text': v:false }
+
+" let g:copilot_filetypes = { '*': v:false }
