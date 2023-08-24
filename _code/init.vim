@@ -9,10 +9,10 @@
 " Check if running in Neovim
 if has('nvim')
   " Neovim-specific settings go here
-  let @p = ":terminal python ~/repos/yamlchop/chop.py -f " . expand('%:p')
+  let @p = ":terminal python ~/repos/journal/_code/chop.py -f " . expand('%:p')
 else
   " Vim-specific settings go here
-  let @p = ":execute '!python ~/repos/yamlchop/chop.py -f ' . expand('%:p')"
+  let @p = ":execute '!python ~/repos/journal/_code/chop.py -f ' . expand('%:p')"
 endif
 
 syntax on
@@ -20,7 +20,8 @@ syntax enable
 
 " Stuff that happens whenever file accessed or buffer is entered.
 autocmd BufEnter * :syntax sync fromstart
-autocmd BufRead,BufNewFile *.md set syntax=on spell tw=79
+autocmd BufRead,BufNewFile *.md,*.txt set syntax=on spell tw=79
+set spellfile=~/.config/nvim/spell/en.utf-8.add
 
 "Change cursor shape in different modes. NeoVim does by default.
 let &t_SI = "\e[6 q"
@@ -46,7 +47,6 @@ set nowrap
 set number
 set relativenumber
 set ruler
-set spellfile=~/repos/vim/en.utf-8.add
 set t_Co=256
 set wildmenu
 set winheight=15
