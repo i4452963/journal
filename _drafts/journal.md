@@ -9,6 +9,34 @@ title: Welcome to Your 1-Textfile Journal For Life!
 
 # Beginning of Journal - Type @j to start a new entry.
 --------------------------------------------------------------------------------
+date: Thu Aug 24, 2023
+---
+
+Hello World! I can journal for life and learn tech in a way that resists
+obsolescence and helps to future-proof your skills.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------
 date: Tue Aug 08, 2023
 ---
 
