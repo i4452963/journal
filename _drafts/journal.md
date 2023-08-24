@@ -12,15 +12,15 @@ title: Welcome to Your 1-Textfile Journal For Life!
 date: Tue Aug 08, 2023
 ---
 
-Welcome to vim journaling. This is a simple textfile journaling system that
-uses vim and git. It's a simple system that you can use to journal your life
-and keep track of your thoughts and ideas, helping you navigate life.
+Welcome to vim journaling. This is a single text-file which you can take over
+and start using as a 1-file journal for the rest of your life.
 
-There are a few more things to know if you wish to use this for blogging. But
-if you're just doing personal journaling, you can just start typing.
+The tools used to create and secure this journal (vim and git) will help you in
+many other aspects of life as well. They are fundamentals of tech
 
-Delete this first entry and start your own.
-
+You can go through vimtutor enough to make new entries here and save it local.
+When you are ready, we can change the git repo it's connected to and you can
+secure it on your own private Github repo (optional).
 
 
 
