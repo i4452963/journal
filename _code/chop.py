@@ -354,7 +354,7 @@ def sync_check():
     # Check if openai_key_path file exits:
     if Path(OPENAI_KEY_PATH).exists():
         with open(OPENAI_KEY_PATH, "r") as fh:
-            openai.api_key = fh.readline()  # Read in your OpenAI API key
+            openai.api_key = fh.readline().strip()  # Read in your OpenAI API key
         for i, (fm, apost, combined) in enumerate(yaml_generator(YAMLESQUE, clone=True)):
             if fm and len(fm) == 2 and "title" in fm and "date" in fm:
                 # Only 2 fields of YAML front matter asks for release.
