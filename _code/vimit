@@ -22,8 +22,8 @@ msg1 = """
      │YAML    │      ┌──────┐     > Using YAML for the data
      │---     │      │      │     > And then Jekyll for the lashing.
      │Markdown│─────►│ HTML │
-     │        │      │      │     START TODAY! DRINKME TO BEGIN
-     │        │      └──────┘     https://mikelev.in/drinkme
+     │        │      │      │     START TODAY! 
+     │        │      └──────┘     https://mykoz.ai
      └────────┘
 """
 
@@ -156,7 +156,7 @@ fig("vim it all...", "Loading data into multiple vim buffers\n")
 git_pull()
 reverse_copy()
 load_editor()
-fig("Pushing to Github...")
+fig("git push...")
 copy_files()
 git_push()
 fig("Done!", "All done. Have a nice day!")
