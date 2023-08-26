@@ -121,7 +121,7 @@ def git_pull():
 
 
 def load_editor():
-    print("Loading editor...")
+    fig("Loading editor...")
     files = " ".join(edit_files)
     command = f"cd {JOURNAL}; nvim {files}"
     system(command)
