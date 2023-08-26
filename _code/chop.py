@@ -789,7 +789,7 @@ def git_push():
     git(here, "add _posts/*")
     git(here, "add _includes/*")
     git(here, "add assets/images/*")
-    git(here, f'commit -am "Pushing {REPO} to Github..."', False)
+    git(here, f'commit -am "Pushing {REPO} to Github."', False)
     git(here, "push", False)
 
 
@@ -840,6 +840,7 @@ def git(cwd, line_command, quiet=True):
     if quiet:
         print(".", end="", flush=True)
     else:
+        print()
         print(f"Running: {show_cmd}")
     process = Popen(
         args=cmd,
@@ -1029,7 +1030,7 @@ print("- Chopping source file into individual pages: ", end="")
 chop_the_yaml()  # Writes out all Jekyll-style posts
 # print("- Making drafts.")
 # make_drafts()  # Writes out all Jekyll-style drafts (optional / easy un-publish)
-print("- Publishing site with git.")
+print("- Publishing site with git.", end="")
 git_push()  # Pushes changes to Github (publishes)
 print("DONE!")
 print("To close this buffer, type :bdel [Enter].")
