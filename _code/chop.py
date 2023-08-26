@@ -207,7 +207,7 @@ def odb(DBNAME, slug, name, data):
         if slug in db:
             result = db[slug]
         else:
-            print(f"Hitting OpenAI for {DBNAME}")
+            # print(f"Hitting OpenAI for {DBNAME}")
             # Chop the article down to a summarize able length
             prompt_length = num_tokens_from_string(data, encoding)
             if prompt_length > chop_at:
@@ -334,6 +334,7 @@ def sync_check():
                 # Setting these values ALSO commits it to the databases
                 hits = []
                 rdict = {}
+                print("- Hitting OpenAI for Subhead, Description and Keywords.")
                 for afield in AI_FIELDS:
                     dbname = f"{REPO_DATA}{afield}.db"
                     result, api_hit = odb(dbname, slug, afield, combined)
@@ -421,9 +422,7 @@ def new_source():
     # | |\  |  __/\ V  V /   ___) | (_) | |_| | | | (_|  __/
     # |_| \_|\___| \_/\_/   |____/ \___/ \__,_|_|  \___\___|
     """If there's a new source, copy it to the input file. It's meta."""
-    print("Comparing and updating input from output.")
     files_are_same = compare_files(YAMLESQUE, TEMP_OUTPUT)
-    print(f"Are the input and output files the same? {files_are_same}")
     if files_are_same:
         print("Nothing's changed. Nothing to publish.")
     else:
