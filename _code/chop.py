@@ -1,33 +1,4 @@
-# __   __ _    __  __ _         _                      chop
-# \ \ / // \  |  \/  | |    ___| |__   ___  _ __        _|   chop
-#  \ V // _ \ | |\/| | |   / __| '_ \ / _ \| '_ \      | |     |   chop
-#   | |/ ___ \| |  | | |__| (__| | | | (_) | |_) |  _  | | ___ |     |  chop
-#   |_/_/   \_\_|  |_|_____\___|_| |_|\___/| .__/  | |_| |/ _ \|_   _|    |   chop
-#                                          |_|      \___/| (_) | | | |_ __|     |   chop
-#   I'm building better blogging                         |\___/| |_| | '__|_ __ |     |
-#   To replace a bygone era              ___             |     |\__,_| |  | '_ \| __ _|
-#   Where your CMS is flogging          |   |         _____    |     |_|  | | | |/ _` |
-#   You to take up something clearer,   |_  |        /     \         |    |_| |_| (_| |
-#   So you catalog your cat tales         \ |       |       \        |    |     |\__,_|
-#   In one file for the hashing           |  \      |       /             |     |     |
-#   Using YAML for the data                \  \____ \_      \                   |     |
-#   And then Jekyll for the lashing.        \      \_/      |                         |
-#                                     ___.   \_            _/                          _
-#                    .-,             /    \    |          |                            _
-#                    |  \          _/      `--_/           \_                          _
-#                     \  \________/                     /\   \                        | |
-#                     |                                /  \_  \                       | |
-#                     `-----------,                   |     \  \                      | |
-#                                 |                  /       \  |                     |_|
-#                                 |                 |         | \
-#                                 /                 |         \__|
-#                                /   _              |
-#                               /   / \_             \
-#                               |  /    \__      __--`
-#                              _/ /        \   _/
-#                          ___/  /          \_/
-#                         /     /
-#                         `----`
+# Chops and publishes single file into multiple for Jekyll publishing.
 
 import os
 import re
@@ -56,7 +27,7 @@ OPENAI_KEY_PATH = "/home/ubuntu/.ssh/openai.txt"
 
 nltk.download('wordnet', quiet=True)  # Update Lemmatizer
 
-# OpenAI, Arrows & Categories, OH MY!
+# Define what fields OpenAI will (optionally) generate.
 ALL_FIELDS = ["date", "title", "headline", "description", "keyword", "categories"]
 AI_FIELDS = ["headline", "description", "keywords"]
 ENGINE = "text-davinci-003"
@@ -67,30 +38,31 @@ TEMPERATURE = 0.5
 MAX_TOKENS = 100
 
 
-def fig(text, description=None):
+# Load function early so we can use it, pronto!
+def fig(text, description=None, font="standard"):
     #  _____ _       _      _
-    # |  ___(_) __ _| | ___| |_    Once upon a programming session
-    # | |_  | |/ _` | |/ _ \ __|   Something that you'll need
-    # |  _| | | (_| | |  __/ |_    Is a way to make your text
-    # |_|   |_|\__, |_|\___|\__|   Something you can read.
+    # |  ___(_) __ _| | ___| |_
+    # | |_  | |/ _` | |/ _ \ __|
+    # |  _| | | (_| | |  __/ |_
+    # |_|   |_|\__, |_|\___|\__|
     #          |___/
-    """Let them see text! Load this function early in the script."""
-    f = Figlet()
+    """Let them see text!"""
+    f = Figlet(font=font)
     print(f.renderText(text))
     if description:
         print(description)
     sleep(0.5)
 
+fig("Chopping...")
 
-fig("Chop Journal...", "This works if you put a _config.yml file in place.")
-#  ____                          _                             ()   ,
-# |  _ \ __ _ _ __ ___  ___     / \   _ __ __ _ ___              O  \\  .
-# | |_) / _` | '__/ __|/ _ \   / _ \ | '__/ _` / __|              0 |\\/|
-# |  __/ (_| | |  \__ \  __/  / ___ \| | | (_| \__ \                / " '\
-# |_|   \__,_|_|  |___/\___| /_/   \_\_|  \__, |___/               . .   .
-# Define command line arguments.          |___/                   /    ) |
-#                                                                '  _.'  |
-# Use in your .vimrc or init.vim like this:                      '-'/    \
+#  ____                          _                             
+# |  _ \ __ _ _ __ ___  ___     / \   _ __ __ _ ___            
+# | |_) / _` | '__/ __|/ _ \   / _ \ | '__/ _` / __|           
+# |  __/ (_| | |  \__ \  __/  / ___ \| | | (_| \__ \           
+# |_|   \__,_|_|  |___/\___| /_/   \_\_|  \__, |___/           
+# Define command line arguments.          |___/                
+#                                                              
+# Use in your .vimrc or init.vim like this:                    
 # let @p = ":terminal python ~/repos/Journal/_code/chop.py -f " . expand('%:p')
 
 aparser = argparse.ArgumentParser()
@@ -157,7 +129,7 @@ for afield in AI_FIELDS:
     command = f'{db_var} = "{db_file}"'
     exec(command)
 
-fig(REPO, f"Preparing to chop {PATH}{REPO}{FILE}")  # Print the repo name
+print(f"CHOPPING: {PATH}{REPO}{FILE}")
 
 # global variables (yes, this is fine in Python)
 ydict = defaultdict(dict)  # A dict of all journal entry front matter
@@ -235,7 +207,7 @@ def odb(DBNAME, slug, name, data):
         if slug in db:
             result = db[slug]
         else:
-            fig(f"OpenAI", DBNAME)
+            print(f"Hitting OpenAI for {DBNAME}")
             # Chop the article down to a summarize able length
             prompt_length = num_tokens_from_string(data, encoding)
             if prompt_length > chop_at:
@@ -324,7 +296,6 @@ def delete_old():
     # | |_| |  __/ |  __/ ||  __/ | |_) | |  | | (_) | |
     # |____/ \___|_|\___|\__\___| | .__/|_|  |_|\___/|_|
     #                             |_|
-    fig("Delete prior", "Deleting auto-generated pages from site.")
     for fh in os.listdir(OUTPUT_PATH):
         delete_me = f"{OUTPUT_PATH}/{fh}"
         os.remove(delete_me)
@@ -348,7 +319,6 @@ def sync_check():
     #  ___) || | | |\  | |___  | |___| | | |  __/ (__|   <
     # |____/ |_| |_| \_|\____|  \____|_| |_|\___|\___|_|\_\
     """Check for new posts needing AI-writing or YAMLESQUE source-file updating."""
-    fig("SYNC Check", "Checking for new posts needing AI-writing.")
     global ydict
 
     # Check if openai_key_path file exits:
@@ -389,7 +359,6 @@ def build_ydict(yamlesque=YAMLESQUE):
     # | |_) | |_| | | | (_| | | |_| | (_| | | | | | | | | (_| | | (__| |_
     # |____/ \__,_|_|_|\__,_|  \__, |\__,_|_| |_| |_|_|  \__,_|_|\___|\__|
     #                          |___/
-    # fig("YAML check", "Building dictionary of all YAML with slug.")
     """Rebuilds ydict from _data/*.dbs, which may have more daata than the YAMLESQUE source."""
     global ydict
     ydict = defaultdict(dict)
@@ -410,7 +379,7 @@ def update_yaml():
     #  \___/| .__/ \__,_|\__,_|\__\___|   |_/_/   \_\_|  |_|_____|
     #       |_|
     """Updates the YAMLESQUE file data from the database"""
-    fig("Update YAML", "Updating YAMLESQUE file...")
+    print("Updating source file with OpenAI responses.")
     with open(TEMP_OUTPUT, "w", encoding="utf-8") as fh:
         for i, (fm, body, post) in enumerate(yaml_generator(YAMLESQUE, clone=True)):
             if i:
@@ -452,7 +421,7 @@ def new_source():
     # | |\  |  __/\ V  V /   ___) | (_) | |_| | | | (_|  __/
     # |_| \_|\___| \_/\_/   |____/ \___/ \__,_|_|  \___\___|
     """If there's a new source, copy it to the input file. It's meta."""
-    fig("Compare files")
+    print("Comparing and updating input from output.")
     files_are_same = compare_files(YAMLESQUE, TEMP_OUTPUT)
     print(f"Are the input and output files the same? {files_are_same}")
     if files_are_same:
@@ -474,7 +443,6 @@ def make_index():
     #
     """Builds the index pages"""
     num_posts = build_ydict()  # Rebuilds ydict from database
-    fig("Make Index", f"Making blog index of {num_posts} posts.")
     with open(f"{INCLUDES}post_list.html", "w", encoding="utf-8") as fh:
         num_posts = len(ydict) + 1
         fh.write(f'<ol start="{num_posts}" reversed >\n')
@@ -515,7 +483,6 @@ def category_scan():
     #  \____\__,_|\__\___|\__, |\___/|_|   \__, | |____/ \___\__,_|_| |_|
     #                     |___/            |___/                         
     """Find Categories"""
-    fig("Category Scan")
     global cdict
     if "categories" in CONFIG and "filter" in CONFIG["categories"]:
         category_filter = CONFIG["categories"]["filter"]
@@ -571,7 +538,7 @@ def category_scan():
     cat_file = f"{REPO_DATA}category_frequency.yml"
     with open(cat_file, "w") as fh:
         yaml.dump(cdict, fh)
-    print(f"Found {len(cdict):,} categories.")
+    # print(f"Found {len(cdict):,} categories.")
     category_grid()  # Builds category_list.md include
     category_page()  # Builds category.md and include
     category_pages()  # Builds cat_*.md and cat_*.md includes
@@ -584,7 +551,6 @@ def category_grid():
     # | |__| (_| | |_  | |_| | |  | | (_| |
     #  \____\__,_|\__|  \____|_|  |_|\__,_|
     #
-    # fig("Cat Page", "Building category page...")
     """Build the 100-cell grid of categories."""
     global cdict
     rows = NUMBER_OF_CATEGORIES // NUMBER_OF_COLUMNS
@@ -618,7 +584,6 @@ def category_page():
     # | |__| (_| | |_  |  __/ (_| | (_| |  __/
     #  \____\__,_|\__| |_|   \__,_|\__, |\___|
     #                              |___/
-    # fig("Cat Page", "Building category page...")
     """Build the category page (singular)"""
     global cdict
     if cdict:
@@ -646,7 +611,6 @@ def category_pages():
     # | |__| (_| | |_  |  __/ (_| | (_| |  __/\__ \
     #  \____\__,_|\__| |_|   \__,_|\__, |\___||___/
     #                              |___/
-    # fig("Cat Pages", "Building category pages (plural)...")
     """Outputs the individual category pages and includes"""
     global ydict
     build_ydict()
@@ -712,7 +676,6 @@ def chop_the_yaml():
     #  \ V // _ \ | |\/| | |   || |   | '_ \ / _ \| '_ \ | || || |
     #   | |/ ___ \| |  | | |___|| |___| | | | (_) | |_) ||_||_||_|
     #   |_/_/   \_\_|  |_|_____| \____|_| |_|\___/| .__/ (_)(_)(_)
-    fig("Chop the YAML!!!")  # |                  |_|
     """Chop a YAMLesque text-file into the individual text-files (posts) it implies."""
     global ydict, cdict
     num_pages = len(ydict)
@@ -775,7 +738,8 @@ def chop_the_yaml():
                         raise SystemExit()
                 fh.write("</ul>")
                 counter += 1
-    print(f"{counter} files chopped!")
+    if counter > 1:
+        print(f"{counter} files chopped!")
 
 
 def make_drafts():
@@ -788,7 +752,6 @@ def make_drafts():
     """Because we can't preview drafts with Github Pages, the system publishes
     with a secret permalink so you can view the rendered draft in a no-CSS
     style that is appropriate for copy/pasting into Docs or Word."""
-    fig("Drafts")
     for i, (fm, body, combined) in enumerate(yaml_generator(YAMLESQUE, drafts=True)):
         # Format the date:
         adate = fm["date"]
@@ -811,7 +774,6 @@ def make_drafts():
             fh.write("---\n")
             fh.write(f"# {fm['title']}\n\n")
             fh.write(body)
-    print("drafts chopped!")
 
 
 def git_push():
@@ -822,15 +784,14 @@ def git_push():
     # | |_| | | |_  |  __/| |_| \__ \ | | |
     #  \____|_|\__| |_|    \__,_|___/_| |_|
     # Git commands
-    fig("Git Push", "Releasing site changes...")
     here = f"{PATH}{REPO}"
     git(here, f"add cat_*")
     git(here, "add _data/*")
     git(here, "add _posts/*")
     git(here, "add _includes/*")
     git(here, "add assets/images/*")
-    git(here, f'commit -am "Pushing {REPO} to Github..."')
-    git(here, "push")
+    git(here, f'commit -am "Pushing {REPO} to Github..."', False)
+    git(here, "push", False)
 
 
 #  _   _      _                  __        __        _       _                 _
@@ -867,7 +828,7 @@ def oget(DBNAME, slug):
     return result
 
 
-def git(cwd, line_command):
+def git(cwd, line_command, quiet=True):
     #        _ _
     #   __ _(_) |_   This is it. This is git.
     #  / _` | | __|  It does the simple deed.
@@ -877,7 +838,10 @@ def git(cwd, line_command):
     """Run a Linux git command."""
     cmd = ["/usr/bin/git"] + shlex.split(line_command)
     show_cmd = " ".join(cmd)
-    print(f"Running: {show_cmd}")
+    if quiet:
+        print(".", end="", flush=True)
+    else:
+        print(f"Running: {show_cmd}")
     process = Popen(
         args=cmd,
         cwd=cwd,
@@ -1054,13 +1018,19 @@ def get_cat_map():
 # |_|   |_|\___/ \_/\_/    \___\___/|_| |_|\__|_|  \___/|_|
 # This controls the entire (usually linear) flow. Edit for debugging.
 
+print("- Deleting prior auto-generated pages from site.")
 delete_old()  # Deletes old posts
+print("- Checking for new posts needing AI-writing.")
 sync_check()  # Catches YAMLESQUE file up with database of OpenAI responses
+print(f"- Making an index.")
 make_index()  # Builds index page of all posts (for blog page)
+print("- Scanning for categories.")
 category_scan()  # Builds global categories and builds category pages
+print("- Chopping source file into individual pages.")
 chop_the_yaml()  # Writes out all Jekyll-style posts
+print("- Making drafts.")
 make_drafts()  # Writes out all Jekyll-style drafts (optional / easy un-publish)
+print("- Git committing and pushing to release site.")
 git_push()  # Pushes changes to Github (publishes)
-
-fig("Done.")
-print("If run from NeoVim, :bdel closes this buffer.")
+print("DONE!")
+print("To close this buffer, type :bdel [Enter].")
