@@ -21,7 +21,7 @@ syntax enable
 " Stuff that happens whenever file accessed or buffer is entered.
 autocmd BufEnter * :syntax sync fromstart
 autocmd BufRead,BufNewFile *.md,*.txt set syntax=on spell tw=79
-set spellfile=~/.config/nvim/spell/en.utf-8.add
+set spellfile=~/.config/nvim/en.utf-8.add
 
 "Change cursor shape in different modes. NeoVim does by default.
 let &t_SI = "\e[6 q"
