@@ -1,10 +1,11 @@
 ---
 title: Welcome to Your 1-Textfile Journal For Life!
 ---
-              - If you haven't gone through vimtutor yet, do so.
-                (Quit vim and type vimtutor in your terminal)
+
+              - DON'T PANIC! Go through the vimtutor lesson!
               - To quit vim, you press: Esc then :q then Enter. 
               - If you made changes, it's Esc then :wq then Enter.
+              - From a Linux Shell, type vimtutor. Then come back.
               - To start a new journal entry, type @j
 
 # Beginning of Journal - Type @j to start a new entry.

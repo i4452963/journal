@@ -121,7 +121,6 @@ def git_pull():
 
 
 def load_editor():
-    fig("Loading editor...")
     files = " ".join(edit_files)
     command = f"cd {JOURNAL}; nvim {files}"
     system(command)
@@ -153,8 +152,9 @@ def reverse_copy():
 # Main Control Flow
 git_pull()
 reverse_copy()
+fig("Loading Editor...")
 load_editor()
-fig("git push...")
+fig("Quitting Editor...")
 copy_files()
 git_push()
 fig("Done!", "All done. Have a nice day!")
