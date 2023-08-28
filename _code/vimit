@@ -150,8 +150,6 @@ def reverse_copy():
         shutil.copy(source, destination)
 
 
-fig("vim it all...", "Loading data into multiple vim buffers\n")
-
 # Main Control Flow
 git_pull()
 reverse_copy()
