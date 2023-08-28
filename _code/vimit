@@ -150,11 +150,14 @@ def reverse_copy():
 
 
 # Main Control Flow
+fig("git pulls...")
 git_pull()
 reverse_copy()
 fig("Loading Editor...")
 load_editor()
+print("Editor Loaded with multiple buffers.")
 fig("Quitting Editor...")
 copy_files()
+fig("git pushes...")
 git_push()
 fig("Done!", "All done. Have a nice day!")
