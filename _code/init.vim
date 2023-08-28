@@ -3,12 +3,12 @@
 " | | '_ \| | __\ \ / / | '_ ` _ \ 
 " | | | | | | |_ \ V /| | | | | | |
 " |_|_| |_|_|\__(_)_/ |_|_| |_| |_|
-" What was once .vimrc is now init.vim.                                 
-" It's time to fix my macros. And update Slice & Dice.
+" vim and NeoVim configuration file.
 
-" Check if running in Neovim
+
+" Check if running in NeoVim (the publishing macro is slightly different)
 if has('nvim')
-  " Neovim-specific settings go here
+  " NeoVim-specific settings go here
   let @p = ":terminal python ~/repos/journal/_code/chop.py -f " . expand('%:p')
 else
   " Vim-specific settings go here
