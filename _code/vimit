@@ -127,7 +127,6 @@ def load_editor():
 
 
 def git_push():
-    print("Hit")
     for repo in git_repos:
         fig(f"{repo.split('/')[-1]}", font="cybermedium")
         print(f"Pushing {repo} to Github...")
