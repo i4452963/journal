@@ -48,14 +48,14 @@ JOURNAL = f"{REPOS}journal/"
 # Files to edit
 edit_files = [
     f"{JOURNAL}_drafts/journal.md",
-    f"{JOURNAL}_code/vimit",
+    f"{JOURNAL}_code/journal",
     f"{JOURNAL}_code/chop.py",
     "/home/ubuntu/.config/nvim/init.vim",
 ]
 
 # Places to put files after editing
 copy_to_destination = {
-    f"{JOURNAL}_code/vimit": "/home/ubuntu/pyenv/bin/vimit",
+    f"{JOURNAL}_code/journal": "/home/ubuntu/pyenv/bin/journal",
     "/home/ubuntu/.config/nvim/init.vim": f"{JOURNAL}_code/init.vim",
 }
 
