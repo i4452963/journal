@@ -459,6 +459,7 @@ def make_index():
     with open(f"{INCLUDES}post_short_list.html", "w", encoding="utf-8") as fh:
         num_posts = len(ydict) + 2
         fh.write(f"<ol>\n")
+        to_ten = 0
         for i, (fm, apost, combined) in enumerate(yaml_generator(YAMLESQUE)):
             if fm and "title" in fm and "date" in fm and "description" in fm:
                 title = fm["title"]
@@ -469,7 +470,8 @@ def make_index():
                 description = description.replace(">", "&gt;")
                 adate = fm["date"]
                 fh.write(f'<li><a href="{BLOG}{slug}/">{title}</a> ({adate})\n<br />{description}</li>\n')
-                if i == 10:
+                to_ten += 1
+                if to_ten >= 10:
                     break
         fh.write("</ol>\n")
 
