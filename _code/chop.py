@@ -214,7 +214,7 @@ def odb(DBNAME, slug, name, data):
                 while prompt_length > chop_at:
                     data = data.rsplit(" ", 1)[0]
                     prompt_length = num_tokens_from_string(data, encoding)
-                    print(".", end="")
+                    # print(".", end="")
                 print(f"Prompt is now {prompt_length} tokens.")
 
             aprompt = make_prompt(name, data)
