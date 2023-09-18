@@ -4,8 +4,8 @@
 " | | | | | | |_ \ V /| | | | | | |
 " |_|_| |_|_|\__(_)_/ |_|_| |_| |_|
 " vim and NeoVim configuration file.
-
-
+" 
+" 
 " Check if running in NeoVim (the publishing macro is slightly different)
 if has('nvim')
   " NeoVim-specific settings go here
