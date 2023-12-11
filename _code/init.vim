@@ -63,6 +63,9 @@ hi Visual ctermfg=black
 " | |  | | (_| | (__| | | (_) \__ \
 " |_|  |_|\__,_|\___|_|  \___/|___/
 "MACRO DEFINITIONS (try to keep them vim-compatible)
+"
+" Git commit and push macro
+let @g = ':w:!git add .:!git commit -m "Journal Commit":!git push'
 
 "Fill-in missing headlines in blog.
 "Needs editing to match the YAMLesque headers in my blog.
